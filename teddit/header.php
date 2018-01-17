@@ -9,6 +9,15 @@
         </ul>
     </div>
     <div id="header-bottom-right">
+<?php
+if (isset($_SESSION['username'])) {
+echo("Logged in as ".$_SESSION['username']." <a href='/logout'>Logout</a>");
+
+}else {
+?>
         Want to join? Log in or sign up in seconds.
+<?php
+}
+?>
     </div>
 </div>

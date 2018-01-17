@@ -60,17 +60,20 @@ priv2="GRANT DROP,CREATE,INSERT,SELECT,DELETE,UPDATE ON vuln_db.* TO 'teddit'@'l
 
 # Prep database table creation queries
 tab1="CREATE TABLE posts (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, title VARCHAR(128), content VARCHAR(2048), user VARCHAR(32), date DATETIME);"
-tab2="CREATE TABLE users (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, user VARCHAR(32) NOT NULL, pass VARCHAR(256) NOT NULL);"
+tab2="CREATE TABLE messages (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, title VARCHAR(128), content VARCHAR(2048), sender VARCHAR(32), recipient VARCHAR(32), date DATETIME, unread bool NOT NULL DEFAULT true);"
+tab3="CREATE TABLE users (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, user VARCHAR(32) NOT NULL, pass VARCHAR(256) NOT NULL);"
 
 # Populate tables
-ins1="INSERT INTO posts (title,content,user) VALUES('Ted is the greatest!','Don\'t you all agree? Ted is awesome!','TedForPresident'),('How about that Ted guy?','Can\'t get enough of that Ted!','Xx_Ted_xX'),('Has Ted Gone Missing?','Where in the world is Ted?','TedTedTed');"
+ins1="INSERT INTO posts (title,content,user) VALUES('Bitcoiners are blaming slump on the moon','Hold on for dear life!','cryptoking'),('Britain Appoints Ministor For Loneliness','Free hugs welcome','nottheonion'),('Alien sightings are no excuse for filing your tax return late','Seriously','TinFoil'),('Zlatan Ibrahimovic linked to LA Galaxy?','Your annual rumor','Footy12'),('Why is the sky blue?','Because science!','A5thGrader'),('You won\'t believe what this politician said!','Surely this will sink them in the polls... right?','FarLeft'),('This is a joke you\'ve probably heard a million times','Why did you click this? It isn\'t even funny...','ASadPanda'),('Elon Musk admits he is under the control of an AI overlord','To the surprise of no one','JohnConnor'),('Battle Toads wins Game of the Year award','But seriously, do you have Battle Toads?','Chumlee');"
+
+ins2="INSERT INTO users (user,pass) VALUES('jbird1992','channingtatum'),('zorro','supersecure');"
 
 # Switch database commands
 sdb1="USE teddit_db;"
 sdb2="USE vuln_db;"
 
 # Assign quereis to single variable
-q="${db1}${db2}${usr}${priv1}${priv2}${sdb1}${tab1}${ins1}${sdb2}${tab2}"
+q="${db1}${db2}${usr}${priv1}${priv2}${sdb1}${tab1}${tab2}${ins1}${sdb2}${tab3}${ins2}"
 
 # Build Database
 mysql -u root -p$MYSQL_PASS -e "$q" &>> $logfile

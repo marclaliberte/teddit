@@ -9,10 +9,12 @@ $host = $_SERVER['HTTP_HOST'];
 
 // Check if POST data submitted
 if (isset($_POST['submit'])) {
-    if (!empty($_POST['title']) && !empty(['text'])) {
+    if (!empty($_POST['title']) && !empty($_POST['text']) && !empty($_POST['recipient'])) {
         // Title and Text have data, process
-        $submitTitle = $_POST['title'];
-        $submitText = $_POST['text'];
+        $messageTitle = $_POST['title'];
+        $messageText = $_POST['text'];
+	$messageTo = strtolower($_POST['recipient']);
+	$messageFrom = $_SESSION['username'];
         $currDate = date('Y-m-d H-i-s');
 
         // Connect to SQL database
@@ -24,11 +26,12 @@ if (isset($_POST['submit'])) {
         }
 
         // Sanitize SQL Data
-        $submitTitle = $db->real_escape_string($submitTitle);
-        $submitText = $db->real_escape_string($submitText);
+        $messageTitle = $db->real_escape_string($messageTitle);
+        $messageText = $db->real_escape_string($messageText);
+	$messageTo = $db->real_escape_string($messageTo);
 
         // Prep SQL query
-        $query = "INSERT INTO posts (title,content,user,date) VALUES('".$submitTitle."', '".$submitText."','anonymous','".$currDate."')";
+        $query = "INSERT INTO messages (title,content,sender,recipient,date) VALUES('".$messageTitle."', '".$messageText."','".$messageFrom."','".$messageTo."','".$currDate."')";
 
         // Run the query
         if($db->query($query)) {
@@ -65,8 +68,17 @@ if (isset($_POST['submit'])) {
 <a name="content"></a>
 <div class="content">
     <h1>submit to teddit</h1>
-    <form class="submit content" action="submit" id="newlink" method="post">
+    <form class="submit content" action="message" id="newlink" method="post">
         <div class="formtabs-content">
+	    <div class="spacer">
+                <div class="roundfield" id="recipient-field">
+                    <span class="recipient">recipient</span>
+                    <div class="roundfield-content">
+                        <input type="text" name="recipient"></input>
+                    </div>
+                </div>
+            </div>
+
             <div class="spacer">
                 <div class="roundfield" id="title-field">
                     <span class="title">title</span>
@@ -90,7 +102,7 @@ if (isset($_POST['submit'])) {
             </div>
         </div>
         <div class="spacer">
-            <button class="btn" name="submit" value="form" type="submit">submit</button>
+            <button class="btn" name="submit" value="form" type="submit">send</button>
         </div>
     </form>
 </div>

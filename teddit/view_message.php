@@ -34,7 +34,7 @@ $host = $_SERVER['HTTP_HOST'];
 
         $postInfo = [];
 
-        $queryPost = "SELECT id,title,content,user FROM posts WHERE id = '".$postId."'";
+        $queryPost = "SELECT id,title,content,sender FROM messages WHERE id = '".$postId."'";
 
         $result = $db->query($queryPost);
         if ($result->num_rows == 0) {
@@ -58,19 +58,10 @@ $host = $_SERVER['HTTP_HOST'];
         <div id="siteTable" class="sitetable linklisting">
             <div id="thing_<?php echo "$postId" ?>" class="odd link self">
                 <p class="parent"></p>
-                <span class="rank">1</span>
-                <div class="midcol unvoted">
-                    <div class="arrow up"></div>
-                    <div class="score unvoted">3987</div>
-                    <div class="arrow down"></div>
-                </div>
-                <a class="thumbnail self" href="/t/teddit/comments/thing_<?php echo "$postId" ?>"></a>
                 <div class="entry unvoted">
                     <p class="title">
-                        <a class="title" href="/t/teddit/comments/thing_<?php echo "$postId" ?>" tabindex="1"><?php echo "$postTitle" ?></a>
-                        <span class="domain">(<a href="/t/teddit/">self.Teddit</a>)</span>
+                        <a class="title" href="/view_message/<?php echo "$postId" ?>" tabindex="1"><?php echo "$postTitle" ?></a>
                     </p>
-                    <p class="tagline">submitted 8 hours ago by <?php echo "$postUser" ?> to /t/Teddit</p>
                     <div class="expando expando-uninitialized">
                         <form action="#" class="usertext">
                         <div class="usertext-body may-blank-within md-container">
@@ -80,10 +71,6 @@ $host = $_SERVER['HTTP_HOST'];
                         </div>
                         </form>
                     </div>
-                    <ul class="flat-list buttons">
-                        <li class="first">10348 comments</li>
-                        <li class="share">share</li>
-                    </ul>
                 </div>
                 <div class="child"></div>
                 <div class="clearleft"></div>
@@ -95,7 +82,7 @@ $host = $_SERVER['HTTP_HOST'];
         </div>
         <div class="commentarea">
             <div class="panestack-title">
-                <span class="title">all 0 comments</span>
+                <span class="title">reply</span>
             </div>
             <form action="#" class="usertext cloneable">
                 <div class="usertext-edit md-container" style>
@@ -104,7 +91,7 @@ $host = $_SERVER['HTTP_HOST'];
                     </div>
                     <div class="bottom-area">
                         <div class="usertext-buttons">
-                            <button type="submit" class="save">save</button>
+                            <button type="submit" class="save">send</button>
                         </div>
                     </div>
                 </div>

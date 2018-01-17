@@ -18,6 +18,8 @@ require($settingsPath);
     require($headerPath);
     require($sidePath);
 
+    $recipient = strtolower($_SESSION['username']);
+
     $db = new mysqli("$dbhost", "$dbuser", "$dbpass", "$dbname");
 
     if ($db->connect_errno > 0) {
@@ -26,7 +28,7 @@ require($settingsPath);
 
     $postRows = [];
 
-    $queryPosts = "SELECT id,title,user FROM posts ORDER BY id DESC";
+    $queryPosts = "SELECT id,title,sender FROM messages WHERE recipient='".$recipient."' ORDER BY id DESC";
 
     $result = $db->query($queryPosts);
     if ($result->num_rows == 0) {
@@ -49,28 +51,17 @@ require($settingsPath);
 <?php
 for ($i = 0; $i < count($postRows); $i++) {
 $postTitle = $postRows[$i]['title'];
-$postUser = $postRows[$i]['user'];
+$postUser = $postRows[$i]['sender'];
 $postId = $postRows[$i]['id'];
 
 ?>
             <div id="thing_<?php echo "$postId" ?>" class="odd link self">
-                <p class="parent"></p>
-                <span class="rank">1</span>
-                <div class="midcol unvoted">
-                    <div class="arrow up"></div>
-                    <div class="score unvoted">3987</div>
-	            <div class="arrow down"></div>
-                </div>
-                <a class="thumbnail self" href="/t/teddit/comments/thing_<?php echo "$postId" ?>"></a>
                 <div class="entry unvoted">
                     <p class="title">
-                        <a class="title" href="/t/teddit/comments/thing_<?php echo "$postId" ?>" tabindex="1"><?php echo "$postTitle" ?></a>
-                        <span class="domain">(<a href="/t/teddit/">self.Teddit</a>)</span>
+                        <a class="title" href="/view_message/message_<?php echo "$postId" ?>" tabindex="1"><?php echo "$postTitle" ?></a>
                     </p>
-                    <p class="tagline">submitted 8 hours ago by <?php echo "$postUser" ?> to /t/Teddit</p>
+                    <p class="tagline">sent by <?php echo "$postUser" ?></p>
                     <ul class="flat-list buttons">
-                        <li class="first">10348 comments</li>
-                        <li class="share">share</li>
                     </ul>
                 </div>
                 <div class="child"></div>

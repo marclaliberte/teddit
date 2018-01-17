@@ -1,6 +1,7 @@
 RewriteEngine on
 
 RewriteRule ^/?t/teddit/comments/thing_(.*)$ comments.php?id=$1 [L]
+RewriteRule ^/?view_message/message_(.*)$ view_message.php?id=$1 [L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
